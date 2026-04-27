@@ -2,8 +2,8 @@ import { create } from 'zustand'
 import { storeTokens, getAccessToken, getRole, clearTokens } from '../lib/auth'
 
 const DEMO_ACCOUNTS: Record<string, string> = {
-  'agent@sqb.uz': 'agent',
-  'supervisor@sqb.uz': 'supervisor',
+  'agent@raqamlibank.uz': 'agent',
+  'supervisor@raqamlibank.uz': 'supervisor',
 }
 const DEMO_PASSWORD = 'demo'
 

@@ -41,7 +41,7 @@ export default function CustomerCallPage() {
       case 'error':
         return "Xatolik yuz berdi"
       default:
-        return 'SQB bankka xush kelibsiz'
+        return 'Raqamli bankka xush kelibsiz'
     }
   })()
 

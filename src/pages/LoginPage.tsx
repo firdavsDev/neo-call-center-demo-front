@@ -142,7 +142,7 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="ism@sqb.uz"
+              placeholder="ism@raqamlibank.uz"
               autoComplete="email"
             />
             <Input
@@ -191,8 +191,8 @@ export default function LoginPage() {
             <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--sqb-blue-600)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Demo kirish
             </div>
-            <DemoHint label="Agent" email="agent@sqb.uz" onFill={() => { setEmail('agent@sqb.uz'); setPassword('demo') }} />
-            <DemoHint label="Supervisor" email="supervisor@sqb.uz" onFill={() => { setEmail('supervisor@sqb.uz'); setPassword('demo') }} />
+            <DemoHint label="Agent" email="agent@raqamlibank.uz" onFill={() => { setEmail('agent@raqamlibank.uz'); setPassword('demo') }} />
+            <DemoHint label="Supervisor" email="supervisor@raqamlibank.uz" onFill={() => { setEmail('supervisor@raqamlibank.uz'); setPassword('demo') }} />
           </div>
         </Card>
 
@@ -204,7 +204,7 @@ export default function LoginPage() {
             color: 'var(--text-muted)',
           }}
         >
-          © 2026 SQB Bank · v0.4.1 MVP
+          © 2026 Raqamli Bank · v0.4.1 MVP
         </div>
       </form>
     </div>

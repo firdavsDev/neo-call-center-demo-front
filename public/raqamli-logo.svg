@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <linearGradient id="raqGrad" x1="10" y1="90" x2="90" y2="10" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1a1f72"/>
+      <stop offset="50%" stop-color="#2462d6"/>
+      <stop offset="100%" stop-color="#3b8bf2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Pixel accent dots (upper-left, outside D bowl) -->
+  <rect x="3" y="35" width="15" height="15" rx="3" fill="#1a1f72"/>
+  <rect x="4" y="16" width="11" height="11" rx="2.5" fill="#2462d6"/>
+  <rect x="18" y="25" width="13" height="13" rx="2.5" fill="#3b8bf2"/>
+
+  <!-- D letterform outer -->
+  <path d="M38 13 L57 13 C80 13 88 28 88 50 C88 72 80 87 57 87 L38 87 Z"
+        fill="url(#raqGrad)"/>
+
+  <!-- D letterform inner cutout -->
+  <path d="M51 29 L58 29 C69 29 73 38 73 50 C73 62 69 71 58 71 L51 71 Z"
+        fill="white"/>
+</svg>

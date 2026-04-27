@@ -10,10 +10,10 @@ export function Logo({ size = 28, mono = false, color, showWordmark = true }: Lo
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
       <img
-        src="/sqb-logo.png"
+        src="/raqamli-logo.svg"
         width={size}
         height={size}
-        alt="SQB"
+        alt="Raqamli Bank"
         style={{ display: 'block', filter: mono ? 'grayscale(1) brightness(0.5)' : 'none' }}
       />
       {showWordmark && (
@@ -26,7 +26,7 @@ export function Logo({ size = 28, mono = false, color, showWordmark = true }: Lo
             color: wordmarkColor,
           }}
         >
-          SQB
+          Raqamli Bank
         </span>
       )}
     </span>

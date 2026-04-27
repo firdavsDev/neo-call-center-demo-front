@@ -61,7 +61,7 @@ export interface QueueEntry {
 export const DEMO_TIMELINE: DemoTimeline = {
   duration: 92,
   transcript: [
-    { t: 1.0,  speaker: 'Operator', text: "Assalomu alaykum, SQB bankka qo'ng'iroq qilganingiz uchun rahmat. Mening ismim Diyora. Sizga qanday yordam bera olaman?" },
+    { t: 1.0,  speaker: 'Operator', text: "Assalomu alaykum, Raqamli bankka qo'ng'iroq qilganingiz uchun rahmat. Mening ismim Diyora. Sizga qanday yordam bera olaman?" },
     { t: 6.5,  speaker: 'Mijoz',    text: "Salom. Men kredit kartani ochmoqchi edim, lekin foiz stavkalari haqida savollarim bor." },
     { t: 11.5, speaker: 'Operator', text: "Albatta, men sizga yordam beraman. Avval ismingiz va familiyangizni ayta olasizmi?" },
     { t: 15.0, speaker: 'Mijoz',    text: "Bekzod Karimov. Toshkent shahridanman." },
@@ -77,7 +77,7 @@ export const DEMO_TIMELINE: DemoTimeline = {
     { t: 71.0, speaker: 'Mijoz',    text: "To'g'ri. Keyingi qadam nima?" },
     { t: 74.0, speaker: 'Operator', text: "Men sizga ariza linkini SMS orqali yuboraman. 24 soat ichida to'ldirsangiz, bonuslar saqlanib qoladi." },
     { t: 81.0, speaker: 'Mijoz',    text: "Rahmat, juda yaxshi. Kutaman." },
-    { t: 84.0, speaker: 'Operator', text: "Sizga yaxshi kun tilayman, Bekzod aka. SQB bankni tanlaganingiz uchun rahmat." },
+    { t: 84.0, speaker: 'Operator', text: "Sizga yaxshi kun tilayman, Bekzod aka. Raqamli bankni tanlaganingiz uchun rahmat." },
   ],
   suggestions: [
     {
@@ -85,7 +85,7 @@ export const DEMO_TIMELINE: DemoTimeline = {
       trigger: 'qimmat',
       bullets: [
         "Foizsiz 60 kunlik davrni eslatib o'ting — agar shu muddatda to'lsa, foiz olinmaydi.",
-        "Boshqa banklar bilan solishtiring: SQB Premium Plus kartada hech qanday yashirin to'lov yo'q.",
+        "Boshqa banklar bilan solishtiring: Raqamli Bank Premium Plus kartada hech qanday yashirin to'lov yo'q.",
         'Yillik xizmat haqi bekor qilinishini taklif qiling.',
       ],
     },
