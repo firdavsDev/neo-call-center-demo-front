@@ -23,10 +23,11 @@ function DemoHint({ label, email, onFill }: { label: string; email: string; onFi
         width: '100%',
       }}
     >
-      <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--sqb-blue-600)', minWidth: 72 }}>{label}</span>
-      <span style={{ fontSize: 12, color: 'var(--text-secondary)', fontFamily: 'monospace' }}>{email}</span>
-      <span style={{ fontSize: 12, color: 'var(--text-muted)', marginLeft: 4, fontFamily: 'monospace' }}>/ demo</span>
-      <span style={{ fontSize: 11, color: 'var(--sqb-blue-500)', marginLeft: 'auto' }}>Tanlash</span>
+      <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--sqb-blue-600)', minWidth: 72, flexShrink: 0 }}>{label}</span>
+      <span style={{ fontSize: 12, color: 'var(--text-secondary)', fontFamily: 'monospace', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {email} / demo
+      </span>
+      <span style={{ fontSize: 11, color: 'var(--sqb-blue-500)', flexShrink: 0 }}>Tanlash</span>
     </button>
   )
 }
