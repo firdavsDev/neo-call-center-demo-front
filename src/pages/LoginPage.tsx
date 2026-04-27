@@ -204,7 +204,7 @@ export default function LoginPage() {
             color: 'var(--text-muted)',
           }}
         >
-          © 2026 Raqamli Bank · v0.4.1 MVP
+          © 2026 Yangi Davr Bank · v0.4.1 MVP
         </div>
       </form>
     </div>

@@ -13,7 +13,7 @@ export function Logo({ size = 28, mono = false, color, showWordmark = true }: Lo
         src="/raqamli-logo.svg"
         width={size}
         height={size}
-        alt="Raqamli Bank"
+        alt="Yangi Davr Bank"
         style={{ display: 'block', filter: mono ? 'grayscale(1) brightness(0.5)' : 'none' }}
       />
       {showWordmark && (
@@ -26,7 +26,7 @@ export function Logo({ size = 28, mono = false, color, showWordmark = true }: Lo
             color: wordmarkColor,
           }}
         >
-          Raqamli Bank
+          Yangi Davr Bank
         </span>
       )}
     </span>
