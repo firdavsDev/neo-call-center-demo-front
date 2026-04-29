@@ -6,6 +6,7 @@ import { Logo } from '../components/primitives/Logo'
 import { LiveDot } from '../components/primitives/LiveDot'
 import { Icon } from '../components/Icon'
 import { fmtTime } from '../lib/format'
+import { LanguageSwitcher } from '../components/primitives'
 
 export default function CustomerCallPage() {
   const { clientId } = useParams<{ clientId: string }>()
@@ -103,18 +104,21 @@ export default function CustomerCallPage() {
         }}
       >
         <Logo size={28} />
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-            fontSize: 13,
-            color: 'var(--success)',
-            fontWeight: 550,
-          }}
-        >
-          <Icon name="shield" size={14} />
-          <span>Xavfsiz ulanish</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <LanguageSwitcher />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              fontSize: 13,
+              color: 'var(--success)',
+              fontWeight: 550,
+            }}
+          >
+            <Icon name="shield" size={14} />
+            <span>Xavfsiz ulanish</span>
+          </div>
         </div>
       </header>
 

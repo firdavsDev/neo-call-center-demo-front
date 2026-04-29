@@ -9,6 +9,7 @@ import { fmtTime } from '../lib/format'
 import { SentimentBadge } from '../components/primitives/Badge'
 import { TranscriptBubble } from '../components/call/TranscriptBubble'
 import { DemoModeToggle } from '../components/DemoModeToggle'
+import { LanguageSwitcher } from '../components/primitives'
 import { useDemoModeStore } from '../store/demoModeStore'
 import { Icon } from '../components/Icon'
 import { useAuthStore } from '../store/authStore'
@@ -571,6 +572,7 @@ export default function SupervisorPage() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <LanguageSwitcher />
           <DemoModeToggle />
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}

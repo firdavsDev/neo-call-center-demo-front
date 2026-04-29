@@ -17,6 +17,7 @@ import { Badge } from '../components/primitives/Badge'
 import { Button } from '../components/primitives/Button'
 import { LiveDot } from '../components/primitives/LiveDot'
 import { SentimentBadge } from '../components/primitives/Badge'
+import { LanguageSwitcher } from '../components/primitives'
 
 import { Icon } from '../components/Icon'
 import { DemoModeToggle } from '../components/DemoModeToggle'
@@ -267,7 +268,7 @@ export default function AgentDashboardPage() {
         <SentimentBadge sentiment={session.sentiment} />
 
         <div style={{ flex: 1 }} />
-
+        <LanguageSwitcher />
         {/* Theme toggle */}
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}

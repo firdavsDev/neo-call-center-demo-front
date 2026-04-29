@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useAuthStore } from './store/authStore'
 import { useThemeStore } from './store/themeStore'
+import { useLanguageStore } from './store/languageStore'
 import LoginPage from './pages/LoginPage'
 import AgentDashboardPage from './pages/AgentDashboardPage'
 import CustomerCallPage from './pages/CustomerCallPage'
@@ -16,6 +17,7 @@ const queryClient = new QueryClient({
 export default function App() {
   const init = useAuthStore((s) => s.init)
   const { theme, blueHue, density } = useThemeStore()
+  const { lang } = useLanguageStore()
 
   useEffect(() => {
     init()
@@ -36,6 +38,10 @@ export default function App() {
     root.style.setProperty('--ai-glow-soft', `hsla(${h + 10}, 95%, 60%, 0.16)`)
     root.style.setProperty('--ai-glow-edge', `hsla(${h + 10}, 95%, 60%, 0.45)`)
   }, [theme, blueHue, density])
+
+  useEffect(() => {
+    document.documentElement.setAttribute('lang', lang)
+  }, [lang])
 
   return (
     <QueryClientProvider client={queryClient}>

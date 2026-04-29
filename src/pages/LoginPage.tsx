@@ -5,6 +5,7 @@ import { Card } from '../components/primitives/Card'
 import { Input } from '../components/primitives/Input'
 import { Button } from '../components/primitives/Button'
 import { Logo } from '../components/primitives/Logo'
+import { LanguageSwitcher } from '../components/primitives'
 
 function DemoHint({ label, email, onFill }: { label: string; email: string; onFill: () => void }) {
   return (
@@ -82,6 +83,9 @@ export default function LoginPage() {
         position: 'relative',
       }}
     >
+      <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 10 }}>
+        <LanguageSwitcher />
+      </div>
       {/* Subtle grid backdrop */}
       <div
         style={{
