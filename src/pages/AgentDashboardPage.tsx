@@ -7,7 +7,7 @@ import { useQueue } from '../hooks/useQueue'
 import { useDemoModeStore } from '../store/demoModeStore'
 import { useAuthStore } from '../store/authStore'
 import { useThemeStore } from '../store/themeStore'
-import { DEMO_TIMELINE } from '../data/demoTimeline'
+import { useDemoTimeline } from '../data/demo'
 import { fmtTime, maskPhone } from '../lib/format'
 import api from '../lib/api'
 
@@ -35,6 +35,7 @@ import { PostCallSummary } from '../components/PostCallSummary'
 // ---------------------------------------------------------------------------
 export default function AgentDashboardPage() {
   const { t } = useT()
+  const demoTimeline = useDemoTimeline()
   const demoEnabled = useDemoModeStore((s) => s.enabled)
   const logout = useAuthStore((s) => s.logout)
   const { theme, setTheme } = useThemeStore()
@@ -130,7 +131,7 @@ export default function AgentDashboardPage() {
   }, [realSession, demoSession, setSearchParams])
 
   // Determine compliance items to show
-  const complianceItems = DEMO_TIMELINE.compliance
+  const complianceItems = demoTimeline.compliance
 
   // Intake visibility
   const intakeVisible =

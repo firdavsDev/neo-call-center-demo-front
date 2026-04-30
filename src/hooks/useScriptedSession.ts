@@ -1,10 +1,14 @@
 import { useReducer, useRef, useCallback } from 'react'
 import { sessionReducer, initialSessionState } from './useSessionReducer'
-import { DEMO_TIMELINE } from '../data/demoTimeline'
+import { useDemoTimeline } from '../data/demo'
+import type { DemoTimeline } from '../data/demoTimeline'
 import type { CallSessionApi, ConfirmIntakeData, IntakeProposal } from '../types/session'
 
 export function useScriptedSession(): CallSessionApi {
   const [state, dispatch] = useReducer(sessionReducer, initialSessionState)
+  const timeline = useDemoTimeline()
+  const timelineRef = useRef<DemoTimeline>(timeline)
+  timelineRef.current = timeline
 
   // Refs to avoid stale closures
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -26,7 +30,7 @@ export function useScriptedSession(): CallSessionApi {
     if (endedRef.current) return
     endedRef.current = true
 
-    const s = DEMO_TIMELINE.summary
+    const s = timelineRef.current.summary
     dispatch({
       type: 'SUMMARY_READY',
       summary: {
@@ -61,7 +65,7 @@ export function useScriptedSession(): CallSessionApi {
         dispatch({ type: 'TICK', callTime: t })
 
         // Transcripts
-        DEMO_TIMELINE.transcript.forEach((item, idx) => {
+        timelineRef.current.transcript.forEach((item, idx) => {
           if (!dispatchedTranscripts.current.has(idx) && item.t <= t) {
             dispatchedTranscripts.current.add(idx)
             dispatch({
@@ -77,7 +81,7 @@ export function useScriptedSession(): CallSessionApi {
         })
 
         // Suggestions
-        DEMO_TIMELINE.suggestions.forEach((item, idx) => {
+        timelineRef.current.suggestions.forEach((item, idx) => {
           if (!dispatchedSuggestions.current.has(idx) && item.t <= t) {
             dispatchedSuggestions.current.add(idx)
             dispatch({
@@ -94,7 +98,7 @@ export function useScriptedSession(): CallSessionApi {
 
         // Sentiment — take latest shift at or before callTime
         let latestSentimentIdx = -1
-        DEMO_TIMELINE.sentimentShifts.forEach((shift, idx) => {
+        timelineRef.current.sentimentShifts.forEach((shift, idx) => {
           if (shift.t <= t) {
             latestSentimentIdx = idx
           }
@@ -103,12 +107,12 @@ export function useScriptedSession(): CallSessionApi {
           sentimentIndexRef.current = latestSentimentIdx
           dispatch({
             type: 'SENTIMENT',
-            sentiment: DEMO_TIMELINE.sentimentShifts[latestSentimentIdx].sentiment,
+            sentiment: timelineRef.current.sentimentShifts[latestSentimentIdx].sentiment,
           })
         }
 
         // Compliance
-        DEMO_TIMELINE.compliance.forEach((item) => {
+        timelineRef.current.compliance.forEach((item) => {
           if (!dispatchedCompliance.current.has(item.id) && item.tickAt <= t) {
             dispatchedCompliance.current.add(item.id)
             dispatch({ type: 'COMPLIANCE_TICK', phraseId: item.id })
@@ -116,9 +120,9 @@ export function useScriptedSession(): CallSessionApi {
         })
 
         // Intake proposal
-        if (!intakeSentRef.current && t >= DEMO_TIMELINE.intakeAppears) {
+        if (!intakeSentRef.current && t >= timelineRef.current.intakeAppears) {
           intakeSentRef.current = true
-          const d = DEMO_TIMELINE.intakeData
+          const d = timelineRef.current.intakeData
           const proposal: IntakeProposal = {
             customerName: d.name,
             customerPassport: d.passport,
@@ -129,7 +133,7 @@ export function useScriptedSession(): CallSessionApi {
         }
 
         // End of demo
-        if (t >= DEMO_TIMELINE.duration) {
+        if (t >= timelineRef.current.duration) {
           endCall()
         }
       }, 100)
