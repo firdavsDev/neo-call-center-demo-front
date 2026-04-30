@@ -3,6 +3,7 @@ import { Button } from './primitives/Button'
 import { Badge } from './primitives/Badge'
 import { fmtTime } from '../lib/format'
 import type { CallSummary } from '../types/session'
+import { useT } from '../i18n'
 
 export interface PostCallSummaryProps {
   summary: CallSummary
@@ -11,6 +12,7 @@ export interface PostCallSummaryProps {
 }
 
 export function PostCallSummary({ summary, callTime, onClose }: PostCallSummaryProps) {
+  const { t } = useT()
   const natija = summary.natija ?? summary.outcome
   const etirozlar = summary.etirozlar ?? summary.objections ?? []
   const keyingiQadam = summary.keyingiQadam ?? summary.nextAction
@@ -55,10 +57,10 @@ export function PostCallSummary({ summary, callTime, onClose }: PostCallSummaryP
         >
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>
-              Qo'ng'iroq yakunlandi
+              {t('postCall.title')}
             </div>
             <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>
-              Davomiylik:{' '}
+              {t('postCall.duration')}{' '}
               <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-secondary)' }}>
                 {duration}
               </span>
@@ -75,7 +77,7 @@ export function PostCallSummary({ summary, callTime, onClose }: PostCallSummaryP
               }
               size="md"
             >
-              {summary.sentiment === 'positive' ? 'Ijobiy' : summary.sentiment === 'negative' ? 'Salbiy' : 'Neytral'}
+              {summary.sentiment === 'positive' ? t('sentiment.positive') : summary.sentiment === 'negative' ? t('sentiment.negative') : t('sentiment.neutral')}
             </Badge>
           )}
         </div>
@@ -84,7 +86,7 @@ export function PostCallSummary({ summary, callTime, onClose }: PostCallSummaryP
         <div style={{ padding: '20px 24px', maxHeight: '60vh', overflowY: 'auto' }}>
           {/* Outcome */}
           {natija && (
-            <Section title="Natija">
+            <Section title={t('postCall.outcome')}>
               <p style={{ margin: 0, fontSize: 14, color: 'var(--text-primary)', lineHeight: 1.6 }}>
                 {natija}
               </p>
@@ -93,7 +95,7 @@ export function PostCallSummary({ summary, callTime, onClose }: PostCallSummaryP
 
           {/* Objections */}
           {etirozlar.length > 0 && (
-            <Section title="E'tirozlar">
+            <Section title={t('postCall.objections')}>
               <ul style={{ margin: 0, paddingLeft: 20 }}>
                 {etirozlar.map((obj, i) => (
                   <li key={i} style={{ fontSize: 14, color: 'var(--text-primary)', lineHeight: 1.6, marginBottom: 4 }}>
@@ -106,7 +108,7 @@ export function PostCallSummary({ summary, callTime, onClose }: PostCallSummaryP
 
           {/* Next action */}
           {keyingiQadam && (
-            <Section title="Keyingi qadam">
+            <Section title={t('postCall.nextStep')}>
               <p style={{ margin: 0, fontSize: 14, color: 'var(--text-primary)', lineHeight: 1.6 }}>
                 {keyingiQadam}
               </p>
@@ -115,7 +117,7 @@ export function PostCallSummary({ summary, callTime, onClose }: PostCallSummaryP
 
           {/* Compliance score */}
           {compliance && (
-            <Section title="Compliance holati">
+            <Section title={t('postCall.compliance')}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div
                   style={{
@@ -154,7 +156,7 @@ export function PostCallSummary({ summary, callTime, onClose }: PostCallSummaryP
           }}
         >
           <Button variant="primary" icon="phone" onClick={onClose}>
-            Yangi qo'ng'iroq
+            {t('postCall.newCall')}
           </Button>
         </div>
       </div>

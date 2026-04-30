@@ -18,6 +18,7 @@ import { Button } from '../components/primitives/Button'
 import { LiveDot } from '../components/primitives/LiveDot'
 import { SentimentBadge } from '../components/primitives/Badge'
 import { LanguageSwitcher } from '../components/primitives'
+import { useT } from '../i18n'
 
 import { Icon } from '../components/Icon'
 import { DemoModeToggle } from '../components/DemoModeToggle'
@@ -33,6 +34,7 @@ import { PostCallSummary } from '../components/PostCallSummary'
 // active one's returned state/methods.
 // ---------------------------------------------------------------------------
 export default function AgentDashboardPage() {
+  const { t } = useT()
   const demoEnabled = useDemoModeStore((s) => s.enabled)
   const logout = useAuthStore((s) => s.logout)
   const { theme, setTheme } = useThemeStore()
@@ -102,14 +104,14 @@ export default function AgentDashboardPage() {
       } catch (err: unknown) {
         const status = (err as { response?: { status?: number } })?.response?.status
         const msg = status === 409
-          ? "Avval joriy qo'ng'iroqni yakunlang"
-          : "Qabul qilib bo'lmadi"
+          ? t('agent.error.finishFirst')
+          : t('agent.error.acceptFailed')
         if (acceptErrorTimerRef.current) clearTimeout(acceptErrorTimerRef.current)
         setAcceptError(msg)
         acceptErrorTimerRef.current = setTimeout(() => setAcceptError(null), 3000)
       }
     },
-    [accept, demoEnabled, session, setSearchParams],
+    [accept, demoEnabled, session, setSearchParams, t],
   )
 
   // End call
@@ -138,7 +140,7 @@ export default function AgentDashboardPage() {
 
   const customerName = session.intakeConfirmed && session.intakeProposal
     ? session.intakeProposal.customerName
-    : 'Mijoz'
+    : t('agent.customer.fallback')
 
   const maskedPhone = session.intakeConfirmed && session.intakeProposal
     ? maskPhone('')
@@ -272,7 +274,7 @@ export default function AgentDashboardPage() {
         {/* Theme toggle */}
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          title={theme === 'dark' ? "Yorug' rejim" : "Qorong'i rejim"}
+          title={theme === 'dark' ? t('nav.themeLight') : t('nav.themeDark')}
           style={{
             background: 'none',
             border: 'none',
@@ -305,7 +307,7 @@ export default function AgentDashboardPage() {
             color: 'var(--text-secondary)',
             fontSize: 13,
           }}
-          title="Chiqish"
+          title={t('nav.logout')}
         >
           <Avatar name="Diyora S." size={28} />
           <span>Diyora S.</span>
@@ -321,9 +323,9 @@ export default function AgentDashboardPage() {
         <section style={transcriptPanelStyle}>
           <div style={panelHeaderStyle}>
             <Icon name="mic" size={15} style={{ color: 'var(--text-secondary)' }} />
-            <span style={{ fontWeight: 600, fontSize: 14, flex: 1 }}>Jonli transkripsiya</span>
+            <span style={{ fontWeight: 600, fontSize: 14, flex: 1 }}>{t('agent.transcript.title')}</span>
             <Badge tone="blue" size="sm" icon={session.status === 'active' ? <LiveDot size={6} color="var(--sqb-blue-600)" /> : undefined}>
-              {session.status === 'active' ? <span style={{ marginLeft: 4 }}>O'zbek + Rus</span> : <span>O'zbek + Rus</span>}
+              {session.status === 'active' ? <span style={{ marginLeft: 4 }}>{t('agent.transcript.lang')}</span> : <span>{t('agent.transcript.lang')}</span>}
             </Badge>
           </div>
 
@@ -341,7 +343,7 @@ export default function AgentDashboardPage() {
                 }}
               >
                 <Icon name="mic" size={32} style={{ opacity: 0.3 }} />
-                <span style={{ fontSize: 14 }}>Qo'ng'iroq kutilmoqda…</span>
+                <span style={{ fontSize: 14 }}>{t('agent.transcript.waiting')}</span>
               </div>
             ) : (
               <>
@@ -373,7 +375,7 @@ export default function AgentDashboardPage() {
                         />
                       ))}
                     </span>
-                    <span style={{ fontSize: 12 }}>Tinglamoqda…</span>
+                    <span style={{ fontSize: 12 }}>{t('agent.transcript.listening')}</span>
                   </div>
                 )}
                 <div ref={transcriptEndRef} />
@@ -387,20 +389,20 @@ export default function AgentDashboardPage() {
           <div style={{ ...panelHeaderStyle, background: 'var(--surface-2)' }}>
             <Icon name="sparkles" size={15} style={{ color: aiEnabled ? 'var(--ai-glow)' : 'var(--text-muted)' }} />
             <span style={{ fontWeight: 600, fontSize: 14, flex: 1, color: aiEnabled ? 'var(--text-primary)' : 'var(--text-muted)' }}>
-              AI Tavsiyalar
+              {t('agent.suggestions.title')}
             </span>
             {aiEnabled && session.suggestions.length > 0 && (
               <Badge tone="ai" size="sm">{session.suggestions.length}</Badge>
             )}
             {aiEnabled && (
               <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                ~1.4s kechikish
+                {t('agent.suggestions.latency')}
               </span>
             )}
             {/* AI toggle */}
             <button
               onClick={() => setAiEnabled((v) => !v)}
-              title={aiEnabled ? "AI yordamini o'chirish" : "AI yordamini yoqish"}
+              title={aiEnabled ? t('agent.suggestions.toggleOff') : t('agent.suggestions.toggleOn')}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -426,7 +428,7 @@ export default function AgentDashboardPage() {
                   transition: 'background 150ms ease',
                 }}
               />
-              {aiEnabled ? 'Yoqilgan' : "O'chirilgan"}
+              {aiEnabled ? t('agent.suggestions.statusOn') : t('agent.suggestions.statusOff')}
             </button>
           </div>
 
@@ -452,7 +454,7 @@ export default function AgentDashboardPage() {
                 color: 'var(--text-muted)',
               }}>
                 <Icon name="sparkles" size={28} style={{ opacity: 0.3 }} />
-                <span style={{ fontSize: 13 }}>AI yordami o'chirilgan</span>
+                <span style={{ fontSize: 13 }}>{t('agent.suggestions.disabled')}</span>
               </div>
             ) : session.suggestions.length === 0 ? (
               <SuggestionCard variant="empty" />
@@ -510,7 +512,7 @@ export default function AgentDashboardPage() {
                 pointerEvents: 'none',
               }}
             >
-              +Nusxa olindi
+              {t('agent.suggestions.copied')}
             </div>
           )}
         </section>
@@ -627,7 +629,7 @@ export default function AgentDashboardPage() {
 
         {session.status === 'active' && (
           <Button variant="danger" size="sm" icon="phone-off" onClick={handleEndCall}>
-            Yakunlash
+            {t('agent.endCall')}
           </Button>
         )}
       </footer>}

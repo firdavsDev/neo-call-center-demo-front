@@ -14,6 +14,7 @@ import { useDemoModeStore } from '../store/demoModeStore'
 import { Icon } from '../components/Icon'
 import { useAuthStore } from '../store/authStore'
 import { useThemeStore } from '../store/themeStore'
+import { useT, useDateLocale } from '../i18n'
 
 // ---------------------------------------------------------------------------
 // Demo fixtures
@@ -371,6 +372,7 @@ function TranscriptDrawer({
   onClose: () => void
   demoTranscript?: TranscriptEntry[]
 }) {
+  const { t } = useT()
   const { data: liveTranscript = [], isLoading } = useCallTranscript(demoTranscript ? null : callId)
   const transcript = demoTranscript ?? liveTranscript
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -390,7 +392,7 @@ function TranscriptDrawer({
       <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', zIndex: 40, animation: 'fade-in 200ms both' }} />
       <div style={{ position: 'fixed', top: 0, right: 0, width: 420, height: '100vh', background: 'var(--surface-1)', borderLeft: '1px solid var(--border-subtle)', zIndex: 50, display: 'flex', flexDirection: 'column', animation: 'slide-in-right 240ms var(--ease-smooth) both' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', borderBottom: '1px solid var(--border-subtle)', flexShrink: 0 }}>
-          <span style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)' }}>Qo'ng'iroq yozuvi</span>
+          <span style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-primary)' }}>{t('supervisor.drawer.title')}</span>
           <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 6, borderRadius: 'var(--r-sm)', display: 'flex', alignItems: 'center' }}>
             <Icon name="x" size={18} />
           </button>
@@ -398,12 +400,12 @@ function TranscriptDrawer({
 
         <div style={{ margin: '12px 16px 0', padding: '10px 14px', background: 'var(--warning-bg)', border: '1px solid var(--warning)', borderRadius: 'var(--r-md)', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           <Icon name="lock" size={14} style={{ color: 'var(--warning)', flexShrink: 0 }} />
-          <span style={{ fontSize: 12, color: 'var(--warning)', lineHeight: 1.4 }}>Mijoz pasporti ma'lumotlari maxfiylashtirilgan</span>
+          <span style={{ fontSize: 12, color: 'var(--warning)', lineHeight: 1.4 }}>{t('supervisor.drawer.privacy')}</span>
         </div>
 
         <div ref={scrollRef} style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
-          {isLoading && !demoTranscript && <div style={{ textAlign: 'center', color: 'var(--text-muted)', paddingTop: 32 }}>Yuklanmoqda…</div>}
-          {!isLoading && transcript.length === 0 && <div style={{ textAlign: 'center', color: 'var(--text-muted)', paddingTop: 32 }}>Yozuv yo'q</div>}
+          {isLoading && !demoTranscript && <div style={{ textAlign: 'center', color: 'var(--text-muted)', paddingTop: 32 }}>{t('supervisor.drawer.loading')}</div>}
+          {!isLoading && transcript.length === 0 && <div style={{ textAlign: 'center', color: 'var(--text-muted)', paddingTop: 32 }}>{t('supervisor.drawer.empty')}</div>}
           {transcript.map((entry) => (
             <TranscriptBubble key={entry.id} speaker={entry.speaker} text={entry.text} time={fmtTime(entry.ts)} />
           ))}
@@ -416,18 +418,6 @@ function TranscriptDrawer({
 // ---------------------------------------------------------------------------
 // History table
 // ---------------------------------------------------------------------------
-const OUTCOME_OPTIONS = [
-  { value: '', label: 'Barcha natijalar' },
-  { value: 'completed', label: 'Yakunlangan' },
-  { value: 'failed', label: 'Muvaffaqiyatsiz' },
-  { value: 'transferred', label: "Ko'chirilgan" },
-]
-
-function sentimentLabel(s: string) {
-  if (s === 'positive') return 'Ijobiy'
-  if (s === 'negative') return 'Salbiy'
-  return 'Neytral'
-}
 function sentimentColor(s: string) {
   if (s === 'positive') return 'var(--success)'
   if (s === 'negative') return 'var(--danger)'
@@ -435,8 +425,17 @@ function sentimentColor(s: string) {
 }
 
 function HistoryTable({ demoData, onRowClick }: { demoData?: CallHistoryItem[]; onRowClick?: (id: string) => void }) {
+  const { t } = useT()
+  const dateLocale = useDateLocale()
   const [outcomeFilter, setOutcomeFilter] = useState('')
   const { data: liveHistory = [], isLoading } = useCallHistory(demoData ? {} : { outcome: outcomeFilter || undefined, limit: 50 })
+
+  const OUTCOME_OPTIONS = [
+    { value: '', label: t('supervisor.filter.all') },
+    { value: 'completed', label: t('supervisor.filter.completed') },
+    { value: 'failed', label: t('supervisor.filter.failed') },
+    { value: 'transferred', label: t('supervisor.filter.transferred') },
+  ]
 
   const history = demoData
     ? demoData.filter((r) => !outcomeFilter || r.outcome === outcomeFilter)
@@ -448,7 +447,7 @@ function HistoryTable({ demoData, onRowClick }: { demoData?: CallHistoryItem[]; 
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-        <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Natija:</span>
+        <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{t('supervisor.filter.prefix')}</span>
         <div style={{ display: 'flex', gap: 6 }}>
           {OUTCOME_OPTIONS.map((opt) => (
             <button
@@ -469,21 +468,21 @@ function HistoryTable({ demoData, onRowClick }: { demoData?: CallHistoryItem[]; 
       </div>
 
       {isLoading && !demoData ? (
-        <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 32 }}>Yuklanmoqda…</div>
+        <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 32 }}>{t('supervisor.loading')}</div>
       ) : history.length === 0 ? (
-        <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 32 }}>Tarix bo'sh</div>
+        <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: 32 }}>{t('supervisor.empty.history')}</div>
       ) : (
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr>
-                <th style={thStyle}>Mijoz</th>
-                <th style={thStyle}>Agent</th>
-                <th style={thStyle}>Davomiyligi</th>
-                <th style={thStyle}>Kayfiyat</th>
-                <th style={thStyle}>Natija</th>
-                <th style={thStyle}>Muvofiqlik</th>
-                <th style={thStyle}>Sana</th>
+                <th style={thStyle}>{t('supervisor.history.customer')}</th>
+                <th style={thStyle}>{t('supervisor.history.agent')}</th>
+                <th style={thStyle}>{t('supervisor.history.duration')}</th>
+                <th style={thStyle}>{t('supervisor.history.sentiment')}</th>
+                <th style={thStyle}>{t('supervisor.history.outcome')}</th>
+                <th style={thStyle}>{t('supervisor.history.compliance')}</th>
+                <th style={thStyle}>{t('supervisor.history.date')}</th>
               </tr>
             </thead>
             <tbody>
@@ -497,7 +496,7 @@ function HistoryTable({ demoData, onRowClick }: { demoData?: CallHistoryItem[]; 
                   <td style={tdStyle}>{row.customerName}</td>
                   <td style={{ ...tdStyle, color: 'var(--text-secondary)' }}>{row.agentId}</td>
                   <td style={tdStyle}>{fmtTime(row.duration)}</td>
-                  <td style={{ ...tdStyle, color: sentimentColor(row.sentiment) }}>{sentimentLabel(row.sentiment)}</td>
+                  <td style={{ ...tdStyle, color: sentimentColor(row.sentiment) }}>{row.sentiment === 'positive' ? t('sentiment.positive') : row.sentiment === 'negative' ? t('sentiment.negative') : t('sentiment.neutral')}</td>
                   <td style={tdStyle}>
                     {row.outcome
                       ? <span style={{ fontSize: 12, padding: '3px 8px', borderRadius: 'var(--r-sm)', background: 'var(--surface-3)', color: 'var(--text-secondary)' }}>{row.outcome}</span>
@@ -512,7 +511,7 @@ function HistoryTable({ demoData, onRowClick }: { demoData?: CallHistoryItem[]; 
                     </div>
                   </td>
                   <td style={{ ...tdStyle, color: 'var(--text-muted)' }}>
-                    {new Date(row.startedAt).toLocaleDateString('uz-UZ', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                    {new Date(row.startedAt).toLocaleDateString(dateLocale, { day: '2-digit', month: '2-digit', year: 'numeric' })}
                   </td>
                 </tr>
               ))}
@@ -528,6 +527,7 @@ function HistoryTable({ demoData, onRowClick }: { demoData?: CallHistoryItem[]; 
 // Page
 // ---------------------------------------------------------------------------
 export default function SupervisorPage() {
+  const { t } = useT()
   const [tab, setTab] = useState<'active' | 'history'>('active')
   const [drawerCallId, setDrawerCallId] = useState<string | null>(null)
   const { activeCalls, isLoading } = useSupervisorFeed()
@@ -563,10 +563,10 @@ export default function SupervisorPage() {
       {/* Top bar */}
       <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', height: 56, borderBottom: '1px solid var(--border-subtle)', background: 'var(--surface-2)', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontWeight: 700, fontSize: 17, color: 'var(--text-primary)' }}>Nazorat paneli</span>
+          <span style={{ fontWeight: 700, fontSize: 17, color: 'var(--text-primary)' }}>{t('supervisor.title')}</span>
           {displayCalls.length > 0 && (
             <span style={{ fontSize: 12, fontWeight: 600, padding: '2px 8px', borderRadius: 'var(--r-full)', background: 'var(--sqb-blue-50)', color: 'var(--sqb-blue-700)', border: '1px solid var(--sqb-blue-100)' }}>
-              {displayCalls.length} faol
+              {t('supervisor.activeCount', { n: displayCalls.length })}
             </span>
           )}
         </div>
@@ -576,7 +576,7 @@ export default function SupervisorPage() {
           <DemoModeToggle />
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            title={theme === 'dark' ? "Yorug' rejim" : "Qorong'i rejim"}
+            title={theme === 'dark' ? t('nav.themeLight') : t('nav.themeDark')}
             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 6, borderRadius: 'var(--r-sm)', display: 'flex', alignItems: 'center' }}
           >
             <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={18} />
@@ -586,26 +586,26 @@ export default function SupervisorPage() {
             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, padding: '6px 10px', borderRadius: 'var(--r-sm)' }}
           >
             <Icon name="logout" size={16} />
-            Chiqish
+            {t('nav.logout')}
           </button>
         </div>
       </header>
 
       {/* Tab bar */}
       <div style={{ display: 'flex', borderBottom: '1px solid var(--border-subtle)', padding: '0 24px', background: 'var(--surface-2)', flexShrink: 0 }}>
-        {tabBtn('active', "Faol qo'ng'iroqlar")}
-        {tabBtn('history', 'Tarix')}
+        {tabBtn('active', t('supervisor.tabs.active'))}
+        {tabBtn('history', t('supervisor.tabs.history'))}
       </div>
 
       {/* Content */}
       <main style={{ flex: 1, padding: 24, overflowY: 'auto' }}>
         {tab === 'active' && (
           <>
-            {displayLoading && <div style={{ textAlign: 'center', color: 'var(--text-muted)', paddingTop: 48 }}>Yuklanmoqda…</div>}
+            {displayLoading && <div style={{ textAlign: 'center', color: 'var(--text-muted)', paddingTop: 48 }}>{t('supervisor.loading')}</div>}
             {!displayLoading && displayCalls.length === 0 && (
               <div style={{ textAlign: 'center', color: 'var(--text-muted)', paddingTop: 80, fontSize: 15 }}>
                 <Icon name="phone" size={36} style={{ display: 'block', margin: '0 auto 12px', opacity: 0.3 }} />
-                Faol qo'ng'iroqlar yo'q
+                {t('supervisor.empty.active')}
               </div>
             )}
             {!displayLoading && displayCalls.length > 0 && (

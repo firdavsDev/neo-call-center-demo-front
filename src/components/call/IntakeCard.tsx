@@ -2,6 +2,7 @@ import type React from 'react'
 import { Icon } from '../Icon'
 import { Button } from '../primitives/Button'
 import type { IntakeProposal } from '../../types/session'
+import { useT } from '../../i18n'
 
 export interface IntakeCardProps {
   data: IntakeProposal
@@ -37,6 +38,7 @@ function Row({ icon, label, value }: RowProps) {
 }
 
 export function IntakeCard({ data, onConfirm, onEdit, onDismiss }: IntakeCardProps) {
+  const { t } = useT()
   const cardStyle: React.CSSProperties = {
     width: 360,
     background: 'var(--surface-glass)',
@@ -65,7 +67,7 @@ export function IntakeCard({ data, onConfirm, onEdit, onDismiss }: IntakeCardPro
           <Icon name="sparkles" size={16} />
         </span>
         <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: 'var(--ai-glow)' }}>
-          Avtomatik to'ldirildi
+          {t('intake.autofilled')}
         </span>
         <button
           onClick={onDismiss}
@@ -84,9 +86,9 @@ export function IntakeCard({ data, onConfirm, onEdit, onDismiss }: IntakeCardPro
 
       {/* Body */}
       <div style={{ padding: '4px 16px' }}>
-        <Row icon="user"   label="Ism"     value={data.customerName} />
-        <Row icon="key"    label="Pasport" value={data.customerPassport} />
-        <Row icon="shield" label="Hudud"   value={data.customerRegion} />
+        <Row icon="user"   label={t('intake.name')}     value={data.customerName} />
+        <Row icon="key"    label={t('intake.passport')} value={data.customerPassport} />
+        <Row icon="shield" label={t('intake.region')}   value={data.customerRegion} />
       </div>
 
       {/* Footer */}
@@ -99,10 +101,10 @@ export function IntakeCard({ data, onConfirm, onEdit, onDismiss }: IntakeCardPro
         }}
       >
         <Button variant="primary" size="sm" onClick={onConfirm} style={{ flex: 1 }}>
-          Tasdiqlash
+          {t('intake.confirm')}
         </Button>
         <Button variant="secondary" size="sm" onClick={onEdit} icon="edit">
-          Tahrirlash
+          {t('intake.edit')}
         </Button>
       </div>
     </div>

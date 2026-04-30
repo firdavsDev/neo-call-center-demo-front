@@ -7,6 +7,7 @@ export const uz: Record<string, string> = {
   'login.submitting': "Kirilmoqda…",
   'login.error': "Login yoki parol noto'g'ri",
   'login.demoHeading': "Demo kirish",
+  'login.select': "Tanlash",
   'login.footer': "© 2026 Yangi Davr Bank · v0.4.1 MVP",
 
   'nav.logout': "Chiqish",

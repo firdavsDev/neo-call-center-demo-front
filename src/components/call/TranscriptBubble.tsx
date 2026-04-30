@@ -1,4 +1,5 @@
 import type React from 'react'
+import { useT } from '../../i18n'
 
 export interface TranscriptBubbleProps {
   speaker: string
@@ -11,6 +12,7 @@ const isOperator = (speaker: string) =>
   speaker === 'Operator' || speaker === 'agent'
 
 export function TranscriptBubble({ speaker, text, time, streaming }: TranscriptBubbleProps) {
+  const { t } = useT()
   const op = isOperator(speaker)
 
   const bubbleStyle: React.CSSProperties = {
@@ -43,7 +45,7 @@ export function TranscriptBubble({ speaker, text, time, streaming }: TranscriptB
   return (
     <div style={wrapStyle}>
       <div style={metaStyle}>
-        {speaker === 'Operator' || speaker === 'agent' ? 'Operator' : 'Mijoz'} · {time}
+        {speaker === 'Operator' || speaker === 'agent' ? t('speaker.operator') : t('speaker.customer')} · {time}
       </div>
       <div style={bubbleStyle}>
         {text}

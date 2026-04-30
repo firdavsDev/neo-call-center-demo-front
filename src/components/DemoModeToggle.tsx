@@ -1,8 +1,10 @@
 import { useDemoModeStore } from '../store/demoModeStore'
+import { useT } from '../i18n'
 
 export function DemoModeToggle() {
   const enabled = useDemoModeStore((s) => s.enabled)
   const setEnabled = useDemoModeStore((s) => s.setEnabled)
+  const { t } = useT()
 
   return (
     <button
@@ -48,7 +50,7 @@ export function DemoModeToggle() {
           }}
         />
       </span>
-      Demo rejimi
+      {t('demoMode.label')}
     </button>
   )
 }

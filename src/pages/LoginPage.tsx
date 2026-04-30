@@ -6,8 +6,10 @@ import { Input } from '../components/primitives/Input'
 import { Button } from '../components/primitives/Button'
 import { Logo } from '../components/primitives/Logo'
 import { LanguageSwitcher } from '../components/primitives'
+import { useT } from '../i18n'
 
 function DemoHint({ label, email, onFill }: { label: string; email: string; onFill: () => void }) {
+  const { t } = useT()
   return (
     <button
       type="button"
@@ -28,12 +30,13 @@ function DemoHint({ label, email, onFill }: { label: string; email: string; onFi
       <span style={{ fontSize: 12, color: 'var(--text-secondary)', fontFamily: 'monospace', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
         {email} / demo
       </span>
-      <span style={{ fontSize: 11, color: 'var(--sqb-blue-500)', flexShrink: 0 }}>Tanlash</span>
+      <span style={{ fontSize: 11, color: 'var(--sqb-blue-500)', flexShrink: 0 }}>{t('login.select')}</span>
     </button>
   )
 }
 
 export default function LoginPage() {
+  const { t } = useT()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -60,7 +63,7 @@ export default function LoginPage() {
         navigate('/agent', { replace: true })
       }
     } catch {
-      setError("Login yoki parol noto'g'ri")
+      setError(t('login.error'))
     } finally {
       setLoading(false)
     }
@@ -123,7 +126,7 @@ export default function LoginPage() {
                   letterSpacing: '-0.01em',
                 }}
               >
-                Sotuv yordamchisi
+                {t('login.title')}
               </div>
               <div
                 style={{
@@ -134,7 +137,7 @@ export default function LoginPage() {
                   maxWidth: 320,
                 }}
               >
-                Sun'iy intellekt yordamida yangi avlod sotuv yordamchisi
+                {t('login.subtitle')}
               </div>
             </div>
           </div>
@@ -142,7 +145,7 @@ export default function LoginPage() {
           {/* Fields */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <Input
-              label="Elektron pochta"
+              label={t('login.email')}
               icon="mail"
               type="email"
               value={email}
@@ -151,7 +154,7 @@ export default function LoginPage() {
               autoComplete="email"
             />
             <Input
-              label="Parol"
+              label={t('login.password')}
               icon="lock"
               type="password"
               value={password}
@@ -178,7 +181,7 @@ export default function LoginPage() {
           )}
 
           <Button variant="primary" size="lg" fullWidth type="submit" disabled={loading}>
-            {loading ? 'Kirilmoqda…' : 'Kirish'}
+            {loading ? t('login.submitting') : t('login.submit')}
           </Button>
 
           {/* Demo credentials hint */}
@@ -194,7 +197,7 @@ export default function LoginPage() {
             }}
           >
             <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--sqb-blue-600)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              Demo kirish
+              {t('login.demoHeading')}
             </div>
             <DemoHint label="Agent" email="agent@raqamlibank.uz" onFill={() => { setEmail('agent@raqamlibank.uz'); setPassword('demo') }} />
             <DemoHint label="Supervisor" email="supervisor@raqamlibank.uz" onFill={() => { setEmail('supervisor@raqamlibank.uz'); setPassword('demo') }} />
@@ -209,7 +212,7 @@ export default function LoginPage() {
             color: 'var(--text-muted)',
           }}
         >
-          © 2026 Yangi Davr Bank · v0.4.1 MVP
+          {t('login.footer')}
         </div>
       </form>
     </div>

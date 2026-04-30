@@ -5,6 +5,7 @@ import { Badge } from '../primitives/Badge'
 import { Button } from '../primitives/Button'
 import { SKIP_REASONS } from '../../data/demoTimeline'
 import type { QueueEntry } from '../../data/demoTimeline'
+import { useT } from '../../i18n'
 
 export interface QueueRailProps {
   queue: QueueEntry[]
@@ -34,6 +35,7 @@ function priorityDotColor(priority: QueueEntry['priority']): string {
 }
 
 export function QueueRail({ queue, onToggle, onAccept, onSkip, callActive }: QueueRailProps) {
+  const { t } = useT()
   const sorted = useMemo(
     () => [...queue].sort((a, b) => b.waitTime - a.waitTime),
     [queue],
@@ -70,7 +72,7 @@ export function QueueRail({ queue, onToggle, onAccept, onSkip, callActive }: Que
         <span style={{ color: 'var(--text-secondary)' }}>
           <Icon name="users" size={16} />
         </span>
-        <span style={{ fontWeight: 600, fontSize: 14, flex: 1 }}>Navbat</span>
+        <span style={{ fontWeight: 600, fontSize: 14, flex: 1 }}>{t('queue.title')}</span>
         <Badge tone="neutral" size="sm">
           {queue.length}
         </Badge>
@@ -103,14 +105,14 @@ export function QueueRail({ queue, onToggle, onAccept, onSkip, callActive }: Que
         }}
       >
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 2 }}>Eng uzun kutish</div>
+          <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 2 }}>{t('queue.longestWait')}</div>
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: waitColor(longestWait), fontWeight: 600 }}>
             {fmtWait(longestWait)}
           </div>
         </div>
         <div style={{ width: 1, background: 'var(--border-subtle)', margin: '0 12px' }} />
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 2 }}>O'rtacha kutish</div>
+          <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 2 }}>{t('queue.avgWait')}</div>
           <div style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--text-secondary)', fontWeight: 600 }}>
             {fmtWait(avgWait)}
           </div>
@@ -128,7 +130,7 @@ export function QueueRail({ queue, onToggle, onAccept, onSkip, callActive }: Que
               fontSize: 13,
             }}
           >
-            Navbat bo'sh
+            {t('queue.empty')}
           </div>
         ) : (
           sorted.map((entry, idx) => (
@@ -160,6 +162,7 @@ function QueueCard({
   onSkip?: (id: string, reason: string, note?: string) => void
   callActive?: boolean
 }) {
+  const { t } = useT()
   const [showSkip, setShowSkip] = useState(false)
   const [skipReason, setSkipReason] = useState(SKIP_REASONS[0])
   const [skipNote, setSkipNote] = useState('')
@@ -219,7 +222,7 @@ function QueueCard({
                 textTransform: 'uppercase',
               }}
             >
-              Keyingi
+              {t('queue.next')}
             </span>
           )}
         </div>
@@ -250,7 +253,7 @@ function QueueCard({
           }}
         >
           <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 5, fontWeight: 600 }}>
-            O'tkazib yuborish sababi
+            {t('queue.skip.title')}
           </div>
           <select
             value={skipReason}
@@ -274,7 +277,7 @@ function QueueCard({
           <textarea
             value={skipNote}
             onChange={(e) => setSkipNote(e.target.value)}
-            placeholder="Izoh (ixtiyoriy)"
+            placeholder={t('queue.skip.placeholder')}
             rows={2}
             style={{
               width: '100%',
@@ -292,10 +295,10 @@ function QueueCard({
           />
           <div style={{ display: 'flex', gap: 6 }}>
             <Button variant="danger" size="sm" onClick={handleSkipSubmit} style={{ flex: 1, fontSize: 11 }}>
-              Tasdiqlash
+              {t('queue.confirm')}
             </Button>
             <Button variant="secondary" size="sm" onClick={() => setShowSkip(false)} style={{ fontSize: 11 }}>
-              Bekor
+              {t('queue.cancel')}
             </Button>
           </div>
         </div>
@@ -332,7 +335,7 @@ function QueueCard({
               }}
             >
               <Icon name="phone" size={12} />
-              Qabul
+              {t('queue.accept')}
             </button>
           )}
           {onSkip && (
@@ -350,7 +353,7 @@ function QueueCard({
                 cursor: 'pointer',
               }}
             >
-              O'tkazish
+              {t('queue.transfer')}
             </button>
           )}
         </div>

@@ -5,6 +5,7 @@ import { Button } from '../primitives/Button'
 import { Badge } from '../primitives/Badge'
 import { SKIP_REASONS } from '../../data/demoTimeline'
 import type { QueueEntry } from '../../data/demoTimeline'
+import { useT } from '../../i18n'
 
 export interface IncomingCallModalProps {
   queue: QueueEntry[]
@@ -18,23 +19,27 @@ function priorityTone(priority: QueueEntry['priority']): 'ai' | 'warning' | 'neu
   return 'neutral'
 }
 
-function priorityLabel(priority: QueueEntry['priority']): string {
-  if (priority === 'vip') return 'VIP'
-  if (priority === 'high') return 'Yuqori'
-  return 'Oddiy'
-}
-
-function fmtWait(seconds: number): string {
-  if (seconds < 60) return `${seconds} sek`
-  const m = Math.floor(seconds / 60)
-  const s = seconds % 60
-  return s > 0 ? `${m} daq ${s} sek` : `${m} daqiqa`
-}
-
 export function IncomingCallModal({ queue, onAccept, onSkip }: IncomingCallModalProps) {
+  const { t } = useT()
   const [showSkip, setShowSkip] = useState(false)
   const [skipReason, setSkipReason] = useState(SKIP_REASONS[0])
   const [skipNote, setSkipNote] = useState('')
+
+  function priorityLabel(priority: QueueEntry['priority']): string {
+    if (priority === 'vip') return t('priority.vip')
+    if (priority === 'high') return t('priority.high')
+    return t('priority.normal')
+  }
+
+  function fmtWait(seconds: number): string {
+    const sec = t('incomingCall.units.sec')
+    const min = t('incomingCall.units.min')
+    const minutes = t('incomingCall.units.minutes')
+    if (seconds < 60) return `${seconds} ${sec}`
+    const m = Math.floor(seconds / 60)
+    const s = seconds % 60
+    return s > 0 ? `${m} ${min} ${s} ${sec}` : `${m} ${minutes}`
+  }
 
   if (queue.length === 0) return null
 
@@ -87,7 +92,7 @@ export function IncomingCallModal({ queue, onAccept, onSkip }: IncomingCallModal
             <Icon name="phone" size={18} />
           </span>
           <span style={{ flex: 1, fontWeight: 600, fontSize: 15, color: 'var(--text-primary)' }}>
-            Kiruvchi qo'ng'iroq
+            {t('incomingCall.title')}
           </span>
           <Badge tone={priorityTone(first.priority)} size="sm">
             {priorityLabel(first.priority)}
@@ -110,16 +115,16 @@ export function IncomingCallModal({ queue, onAccept, onSkip }: IncomingCallModal
           </div>
           <div style={{ display: 'flex', gap: 16, fontSize: 13, color: 'var(--text-secondary)', marginBottom: 4 }}>
             <span>
-              <span style={{ color: 'var(--text-muted)' }}>Hudud: </span>
+              <span style={{ color: 'var(--text-muted)' }}>{t('incomingCall.region')} </span>
               {first.region}
             </span>
             <span>
-              <span style={{ color: 'var(--text-muted)' }}>Mavzu: </span>
+              <span style={{ color: 'var(--text-muted)' }}>{t('incomingCall.topic')} </span>
               {first.topic}
             </span>
           </div>
           <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 16 }}>
-            Kutish vaqti: <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--warning)' }}>{fmtWait(first.waitTime)}</span>
+            {t('incomingCall.waitTime')} <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--warning)' }}>{fmtWait(first.waitTime)}</span>
           </div>
 
           {/* Skip form */}
@@ -133,7 +138,7 @@ export function IncomingCallModal({ queue, onAccept, onSkip }: IncomingCallModal
               }}
             >
               <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 8, fontWeight: 600 }}>
-                O'tkazib yuborish sababi
+                {t('incomingCall.skipReasonTitle')}
               </div>
               <select
                 value={skipReason}
@@ -157,7 +162,7 @@ export function IncomingCallModal({ queue, onAccept, onSkip }: IncomingCallModal
               <textarea
                 value={skipNote}
                 onChange={(e) => setSkipNote(e.target.value)}
-                placeholder="Qo'shimcha izoh (ixtiyoriy)"
+                placeholder={t('incomingCall.placeholder')}
                 rows={2}
                 style={{
                   width: '100%',
@@ -174,10 +179,10 @@ export function IncomingCallModal({ queue, onAccept, onSkip }: IncomingCallModal
               />
               <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                 <Button variant="danger" size="sm" onClick={handleSkipSubmit} style={{ flex: 1 }}>
-                  Tasdiqlash
+                  {t('incomingCall.confirm')}
                 </Button>
                 <Button variant="secondary" size="sm" onClick={() => setShowSkip(false)}>
-                  Bekor qilish
+                  {t('incomingCall.cancel')}
                 </Button>
               </div>
             </div>
@@ -194,14 +199,14 @@ export function IncomingCallModal({ queue, onAccept, onSkip }: IncomingCallModal
               onClick={() => onAccept(first.id)}
               style={{ flex: 1, background: 'var(--success)', border: '1px solid #15803D' }}
             >
-              Qabul qilish
+              {t('incomingCall.accept')}
             </Button>
             <Button
               variant="secondary"
               size="md"
               onClick={() => setShowSkip(true)}
             >
-              O'tkazib yuborish
+              {t('incomingCall.skip')}
             </Button>
           </div>
         )}

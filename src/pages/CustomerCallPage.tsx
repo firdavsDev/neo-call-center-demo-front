@@ -7,8 +7,10 @@ import { LiveDot } from '../components/primitives/LiveDot'
 import { Icon } from '../components/Icon'
 import { fmtTime } from '../lib/format'
 import { LanguageSwitcher } from '../components/primitives'
+import { useT } from '../i18n'
 
 export default function CustomerCallPage() {
+  const { t } = useT()
   const { clientId } = useParams<{ clientId: string }>()
   const {
     phase,
@@ -35,33 +37,22 @@ export default function CustomerCallPage() {
   // Greeting text by phase
   const headingText = (() => {
     switch (phase) {
-      case 'loading':
-        return 'Yuklanmoqda…'
-      case 'ended':
-        return "Qo'ng'iroq yakunlandi"
-      case 'error':
-        return "Xatolik yuz berdi"
-      default:
-        return 'Raqamli bankka xush kelibsiz'
+      case 'loading': return t('customer.heading.loading')
+      case 'ended':   return t('customer.heading.ended')
+      case 'error':   return t('customer.heading.error')
+      default:        return t('customer.heading.welcome')
     }
   })()
 
   const subtitleText = (() => {
     switch (phase) {
-      case 'loading':
-        return null
-      case 'idle':
-        return "Operator bilan bog'lanish uchun tugmani bosing"
-      case 'ringing':
-        return 'Operator qidirilmoqda…'
-      case 'active':
-        return 'Operator bilan suhbatlashayapsiz'
-      case 'ended':
-        return 'Suhbat uchun rahmat!'
-      case 'error':
-        return error ?? "Noma'lum xatolik"
-      default:
-        return null
+      case 'loading': return null
+      case 'idle':    return t('customer.subtitle.idle')
+      case 'ringing': return t('customer.subtitle.searching')
+      case 'active':  return t('customer.subtitle.connected')
+      case 'ended':   return t('customer.subtitle.ended')
+      case 'error':   return error ?? t('customer.subtitle.error')
+      default:        return null
     }
   })()
 
@@ -117,7 +108,7 @@ export default function CustomerCallPage() {
             }}
           >
             <Icon name="shield" size={14} />
-            <span>Xavfsiz ulanish</span>
+            <span>{t('customer.secureBadge')}</span>
           </div>
         </div>
       </header>
@@ -146,7 +137,7 @@ export default function CustomerCallPage() {
                 margin: '0 0 16px',
               }}
             >
-              Salom, {displayName}!
+              {t('customer.greeting', { name: displayName ?? '' })}
             </p>
           )}
           <h1
@@ -204,7 +195,7 @@ export default function CustomerCallPage() {
           }}
         >
           {phase === 'loading' && (
-            <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>Yuklanmoqda…</p>
+            <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>{t('customer.heading.loading')}</p>
           )}
 
           {phase === 'idle' && (
@@ -230,7 +221,7 @@ export default function CustomerCallPage() {
                   display: 'inline-block',
                 }}
               />
-              6 ta operator onlayn
+              {t('customer.operatorsOnline')}
             </div>
           )}
 
@@ -246,7 +237,7 @@ export default function CustomerCallPage() {
               }}
             >
               <LiveDot color="var(--warning)" size={8} />
-              <span>Operator kutilmoqda… {fmtTime(waitTime)}</span>
+              <span>{t('customer.operatorWaiting', { time: fmtTime(waitTime) })}</span>
             </div>
           )}
 
@@ -270,7 +261,7 @@ export default function CustomerCallPage() {
                 }}
               >
                 <LiveDot color="var(--success)" size={8} />
-                <span>Operator ulandi · {operatorName ?? 'Diyora S.'}</span>
+                <span>{t('customer.operatorConnected', { name: operatorName ?? 'Diyora S.' })}</span>
               </div>
               <span
                 style={{
@@ -301,7 +292,7 @@ export default function CustomerCallPage() {
                 }}
               >
                 <Icon name="phone-off" size={16} />
-                <span>Qo'ng'iroqni yakunlash</span>
+                <span>{t('customer.endCall')}</span>
               </button>
             </div>
           )}
@@ -318,7 +309,7 @@ export default function CustomerCallPage() {
               }}
             >
               <Icon name="check" size={16} style={{ color: 'var(--success)' }} />
-              <span>Suhbat yakunlandi. Vaqtingiz uchun rahmat!</span>
+              <span>{t('customer.thanks')}</span>
             </div>
           )}
 
@@ -334,7 +325,7 @@ export default function CustomerCallPage() {
               }}
             >
               <Icon name="alert" size={16} style={{ color: 'var(--danger)' }} />
-              <span>{error ?? "Noma'lum xatolik"}</span>
+              <span>{error ?? t('customer.subtitle.error')}</span>
             </div>
           )}
         </div>
@@ -350,7 +341,7 @@ export default function CustomerCallPage() {
           borderTop: '1px solid var(--border-subtle)',
         }}
       >
-        Qo'ng'iroq xavfsiz va bepul · Ish vaqti 9:00–21:00
+        {t('customer.footer')}
       </footer>
 
       {/* Hidden audio element for remote stream */}

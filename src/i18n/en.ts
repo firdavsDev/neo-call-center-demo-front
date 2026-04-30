@@ -7,6 +7,7 @@ export const en: Record<string, string> = {
   'login.submitting': "Signing in…",
   'login.error': "Invalid login or password",
   'login.demoHeading': "Demo login",
+  'login.select': "Select",
   'login.footer': "© 2026 Yangi Davr Bank · v0.4.1 MVP",
 
   'nav.logout': "Sign out",

@@ -3,6 +3,7 @@ import { useState, useCallback } from 'react'
 import { Card } from '../primitives/Card'
 import { LiveDot } from '../primitives/LiveDot'
 import { Icon } from '../Icon'
+import { useT } from '../../i18n'
 
 export interface SuggestionCardProps {
   variant?: 'empty' | 'settled'
@@ -13,6 +14,7 @@ export interface SuggestionCardProps {
 }
 
 export function SuggestionCard({ variant = 'empty', trigger, bullets, age, onCopy }: SuggestionCardProps) {
+  const { t } = useT()
   const [copiedIdx, setCopiedIdx] = useState<number | null>(null)
 
   const isFresh = (age ?? 0) < 2
@@ -59,7 +61,7 @@ export function SuggestionCard({ variant = 'empty', trigger, bullets, age, onCop
             />
           ))}
         </div>
-        <span style={{ fontSize: 13 }}>AI tinglamoqda…</span>
+        <span style={{ fontSize: 13 }}>{t('suggestion.listening')}</span>
       </div>
     )
   }
@@ -91,7 +93,7 @@ export function SuggestionCard({ variant = 'empty', trigger, bullets, age, onCop
             textTransform: 'uppercase',
           }}
         >
-          AI Tavsiya
+          {t('suggestion.aiTip')}
         </span>
         {trigger && (
           <span
@@ -151,7 +153,7 @@ export function SuggestionCard({ variant = 'empty', trigger, bullets, age, onCop
             </span>
             <button
               onClick={() => handleCopy(bullet, idx)}
-              title="Nusxa olish"
+              title={t('suggestion.copy')}
               style={{
                 flexShrink: 0,
                 background: 'none',

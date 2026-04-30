@@ -7,6 +7,7 @@ export const ru: Record<string, string> = {
   'login.submitting': "Вход…",
   'login.error': "Неверный логин или пароль",
   'login.demoHeading': "Демо-вход",
+  'login.select': "Выбрать",
   'login.footer': "© 2026 Yangi Davr Bank · v0.4.1 MVP",
 
   'nav.logout': "Выйти",
